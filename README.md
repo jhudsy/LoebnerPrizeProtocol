@@ -80,7 +80,7 @@ Messages along the __AuthError__ topic indicate an authentication error, and con
 Messages on the __TargetError__ topic indicate that the client attempted to send a message to someone they're not supposed to be in communication with, or during the wrong phase of the competition (e.g., before the current round was Running).
 
 # Protocol
-The client should connect to the server's URL using websockets, and immediately send a `register` message.
+The client should connect to the server's URL using a socket.io client, and immediately send a `register` message.
 
 They can then send control messages at any time to the server (e.g., if they get disconnected and wish to determine what the current round status is on reconnecting).
 
