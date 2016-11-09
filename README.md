@@ -86,4 +86,4 @@ They can then send control messages at any time to the server (e.g., if they get
 
 The server can also send control messages to the client at any time (see above as to which control messages the server may send).
 
-Communication messages should only be sent when the round is Running, doing so at other stages will result in an error being sent to the client.
+Communication messages should only be sent when the round is Running, doing so at other stages will result in an error (TargetError or AuthError) being sent to the client.
