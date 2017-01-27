@@ -26,6 +26,24 @@ var NAME="conf0";
 var SECRET="abc123";
 var partner;
 
+//taken from https://github.com/janl/mustache.js/blob/master/mustache.js#L60
+var entityMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '`': '&#x60;',
+  '=': '&#x3D;'
+};
+
+function escapeHtml (string) {
+  return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+
 //Adds authentication information to a hash before sending it to the server.
 function toJSON(map)
 {
@@ -47,7 +65,7 @@ socket.emit('control', toJSON({"status":"roundStatus"}));
 //handle an incoming message from a client
 socket.on('message',function(data){
     d=JSON.parse(data);
-    $('#messagepane').append("<div class='right'>"+d.contents+"</div>");
+    $('#messagepane').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
 });
 
 //handle control messages
@@ -84,7 +102,7 @@ $('#typeArea').keyup(function(e){
  if (e.keyCode==13)
  {
     var text=$('#typeArea').val();
-    $('#messagepane').append("<div class='left'>"+text+"</div>");
+    $('#messagepane').append("<div class='left'>"+escapeHtml(text)+"</div>");
     $('#typeArea').val("");
     $('#messagepane').scrollTop($('#messagepane').height());
     socket.emit('message',toJSON({"contents":text, "to":partner}));

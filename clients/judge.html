@@ -68,6 +68,24 @@ var SECRET="alice";
 var partnerL;
 var partnerR;
 
+//taken from https://github.com/janl/mustache.js/blob/master/mustache.js#L60
+  var entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+  };
+
+  function escapeHtml (string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+      return entityMap[s];
+    });
+  }
+
 function toJSON(map)
 {
   map["id"]=NAME;
@@ -113,9 +131,9 @@ socket.emit('control',  toJSON({"status":"register"}));
 socket.on('message',function(data){
     d=JSON.parse(data);
     if (d.id==partnerR)
-      $('#messagepaneR').append("<div class='right'>"+d.contents+"</div>");
+      $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
     else
-      $('#messagepaneL').append("<div class='right'>"+d.contents+"</div>");
+      $('#messagepaneL').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
 });
 socket.on('control',function(data){
   d=JSON.parse(data);
@@ -151,7 +169,7 @@ $('#typeAreaL').keyup(function(e){
  if (e.keyCode==13)
  {
     var text=$('#typeAreaL').val();
-    $('#messagepaneL').append("<div class='left'>"+text+"</div>");
+    $('#messagepaneL').append("<div class='left'>"+escapeHtml(text)+"</div>");
     $('#typeAreaL').val("");
     $('#messagepaneL').scrollTop($('#messagepaneL').height());
     socket.emit('message',toJSON({"contents":text, "to":partnerL}));
@@ -162,7 +180,7 @@ $('#typeAreaR').keyup(function(e){
  if (e.keyCode==13)
  {
     var text=$('#typeAreaR').val();
-    $('#messagepaneR').append("<div class='left'>"+text+"</div>");
+    $('#messagepaneR').append("<div class='left'>"+escapeHtml(text)+"</div>");
     $('#typeAreaR').val("");
     $('#messagepaneR').scrollTop($('#messagepaneR').height());
     socket.emit('message',toJSON({"contents":text, "to":partnerR}));
@@ -210,7 +228,7 @@ $('#submitFinalScoring').click(function(e){
   if (fsError)
         alert("Error in entering final scores");
   else
-        socket.emit('finalScore',toJSON("finalScores":finalScores));
+        socket.emit('finalScore',toJSON({"finalScores":finalScores}));
 });
 });
 </script>
