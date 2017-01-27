@@ -5,7 +5,7 @@ The clients directory contains a sample confederate (identical to an AI), and a 
 Edit the names and secrets in the `server.js` file, and the names, secrets and urls in the HTML files.
 
 ## Running
-To run, install node, and run `node server.js`. You should then be able to open the html files in your browser.
+To run, install node, and the dependencies for the server (socket.io, socket.io-client and express, e.g., via `npm install socket.io` etc.), and run `node server.js`. You should then be able to open the html files in your browser.
 
 # Message Types
 Below, we break down messages by topic. An AI client will send messages to the server on the following topics:
@@ -87,3 +87,6 @@ They can then send control messages at any time to the server (e.g., if they get
 The server can also send control messages to the client at any time (see above as to which control messages the server may send).
 
 Communication messages should only be sent when the round is Running, doing so at other stages will result in an error (TargetError or AuthError) being sent to the client.
+
+# Mapping from the old protocol
+With thanks to Robert Denis, an interface between the old and new protocol can be obtained at [http://www.vixia.fr/mylene/download/ai_old_protocol.zip]
