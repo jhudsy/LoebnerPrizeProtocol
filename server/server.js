@@ -1,4 +1,7 @@
-var app=require('express')();
+var express=require('express');
+var app=express();
+var serveStatic = require('serve-static');
+app.use(serveStatic(__dirname));
 var http=require('http').Server(app);
 var io=require('socket.io')(http);
 var client=require('socket.io-client');
