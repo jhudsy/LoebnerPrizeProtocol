@@ -1,4 +1,6 @@
 var app=require('express')();
+var serveStatic = require('serve-static');
+app.use(serveStatic(__dirname));
 var http=require('http').Server(app);
 var io=require('socket.io')(http);
 var client=require('socket.io-client');
@@ -125,7 +127,7 @@ clients={};
 roundStatus=FINISHED;
 //scores: for each round, a judge decides which partner is human and which ai.
 //So we have a hash of judgename->[confederate,mark] in each round.
-//The mark is used at the end as the score given to teh confederate
+//The mark is used at the end as the score given to the confederate
 //for "humanness".
 scores=[{},{},{},{}];
 //messages is an array of maps storing all messages sent to/from the client.
