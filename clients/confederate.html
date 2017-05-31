@@ -62,13 +62,13 @@
 
 //handle an incoming message from a client
                 socket.on('message',function(data){
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     $('#messagepane').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
                 });
 
 //handle control messages
                 socket.on('control',function(data){
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     switch(d.status)
                     {
                         case "newRound": alert("New round about to begin");
@@ -85,7 +85,7 @@
 
 //handle round information - if the round is running already then enable the textarea for typing.
                 socket.on('roundInformation',function(data){
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     if (d.roundNumber>=0) partner=d.partners[NAME][0];
                     switch(d.status) {
                         case "startRound":$('#typeArea').prop('disabled',false);

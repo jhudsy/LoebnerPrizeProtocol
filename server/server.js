@@ -7,7 +7,7 @@ var client=require('socket.io-client');
 var fs=require('fs');
 io.set('origins','*:*');
 
-config={};
+var config={};
 
 config.judge=[];
 config.ai=[];
@@ -122,22 +122,22 @@ function getJudgeForAIByName(judgeNumber,round)
 RUNNING="Running";
 NOTSTARTED="Not Started";
 FINISHED="Finished";
-currentRound=-1;
-clients={};
-roundStatus=FINISHED;
+var currentRound=-1;
+var clients={};
+var roundStatus=FINISHED;
 //scores: for each round, a judge decides which partner is human and which ai.
 //So we have a hash of judgename->[confederate,mark] in each round.
 //The mark is used at the end as the score given to the confederate
 //for "humanness".
-scores=[{},{},{},{}];
+var scores=[{},{},{},{}];
 //messages is an array of maps storing all messages sent to/from the client.
 //In turn, each map is a client -> messages (array) entry storing the ordered
 //list of messages sent to/from the client.
-messages=[{},{},{},{}];
+var messages=[{},{},{},{}];
 //////////////////////////////////////////////////////////////////////////
 function validate(socket,data)
 {
-  o=JSON.parse(data);
+  var o=JSON.parse(data);
   if (config.secret[o["id"]]==o["secret"])
     return true;
   socket.emit("AuthError","Invalid secret");
@@ -162,7 +162,7 @@ function handleControllerMessage(socket,data)
 {
   if (!validate(socket,data))
     return;
-  o=JSON.parse(data);
+  var o=JSON.parse(data);
   switch(o["status"]){
     case "statusUpdate": emitStatusUpdate(socket);
                          break;
@@ -185,7 +185,7 @@ function handleControlMessage(socket,data)
 {
   if (!validate(socket,data))
     return;
-  o=JSON.parse(data);
+  var o=JSON.parse(data);
   switch(o["status"]){
     case "register": clients[o["id"]]=socket;break;
     case "roundInformation":var i=JSON.stringify(informPartners());
@@ -203,8 +203,8 @@ function handleCommunicationMessage(socket,data)
 {
   if (!validate(socket,data))
     return;
-  o=JSON.parse(data);
-  c=o.id;
+  var o=JSON.parse(data);
+  var c=o.id;
   if (roundStatus==RUNNING &&
       isAI(c) && o.to==getJudgeForAIByName(getAI(c),currentRound) ||
       isConfederate(c) && o.to==getJudgeForConfederateByName(getConfederate(c),currentRound) ||
@@ -247,7 +247,7 @@ function handleScoreMessage(socket,data)
 //computes who needs to talk to who in this round.
 function informPartners()
 {
-  p={}
+  var p={}
   if (currentRound<0)
     return p;
 

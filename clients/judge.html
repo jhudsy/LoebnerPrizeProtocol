@@ -125,7 +125,7 @@
                 var socket=io(URL);
                 socket.emit('control',  toJSON({"status":"register"}));
                 socket.on('message',function(data){
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     if (d.id==partnerR) {
                         $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
                     }
@@ -135,7 +135,7 @@
                 });
 
                 socket.on('control',function(data){
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     switch(d.status) {
                         case "newRound": alert("New round about to begin");
                         setPartners(d.partners[NAME]);
@@ -152,7 +152,7 @@
                 });
 
                 socket.on('roundInformation',function(data) {
-                    d=JSON.parse(data);
+                    var d=JSON.parse(data);
                     if (d.roundNumber>=0) setPartners(d.partners[NAME]);
                     switch(d.status) {
                         case "startRound":$('#typeAreaL').prop('disabled',false);
