@@ -128,9 +128,11 @@
                     var d=JSON.parse(data);
                     if (d.id==partnerR) {
                         $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
+                        $('#messagepaneR').scrollTop($('#messagepaneR').height());
                     }
                     else {
                         $('#messagepaneL').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
+                        $('#messagepaneL').scrollTop($('#messagepaneL').height());
                     }
                 });
 

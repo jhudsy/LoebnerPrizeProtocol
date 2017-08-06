@@ -38,7 +38,7 @@
 
 //connectedclients is a triple (array) containing judge,ai,confederate -> true/false hashes storing if the client is connected or not.
                     var s="<table>";
-                    for (i=0;i<3;i++) {
+                    for (i=0;i<=3;i++) {
                         s+="<tr>";
                         for (var c in status.connectedClients[i]) {
                             if (status.connectedClients[i][c])  //judge is connected
