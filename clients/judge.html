@@ -127,11 +127,11 @@
                 socket.on('message',function(data){
                     var d=JSON.parse(data);
                     if (d.id==partnerR) {
-                        $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
+                        $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
                         $('#messagepaneR').scrollTop($('#messagepaneR').height());
                     }
                     else {
-                        $('#messagepaneL').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
+                        $('#messagepaneL').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
                         $('#messagepaneL').scrollTop($('#messagepaneL').height());
                     }
                 });
@@ -141,8 +141,8 @@
                     switch(d.status) {
                         case "newRound": alert("New round about to begin");
                         setPartners(d.partners[NAME]);
-                        $('#messagePaneL').empty();
-                        $('#messagePaneR').empty();
+                        $('#messagepaneL').empty();
+                        $('#messagepaneR').empty();
                         break;
                         case "startRound": handleStartRound();
                         alert("Round has started");
@@ -169,7 +169,7 @@
                         $('#messagepaneL').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeAreaL').val("");
                         $('#messagepaneL').scrollTop($('#messagepaneL').height());
-                        socket.emit('message',toJSON({"contents":text, "to":partnerL}));
+                        socket.emit('message',toJSON({"content":text, "to":partnerL}));
                     }
                 });
 
@@ -179,7 +179,7 @@
                         $('#messagepaneR').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeAreaR').val("");
                         $('#messagepaneR').scrollTop($('#messagepaneR').height());
-                        socket.emit('message',toJSON({"contents":text, "to":partnerR}));
+                        socket.emit('message',toJSON({"content":text, "to":partnerR}));
                     }
                 });
 

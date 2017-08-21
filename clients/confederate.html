@@ -63,7 +63,7 @@
 //handle an incoming message from a client
                 socket.on('message',function(data){
                     var d=JSON.parse(data);
-                    $('#messagepane').append("<div class='right'>"+escapeHtml(d.contents)+"</div>");
+                    $('#messagepane').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
                 });
 
 //handle control messages
@@ -100,7 +100,7 @@
                         $('#messagepane').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeArea').val("");
                         $('#messagepane').scrollTop($('#messagepane').height());
-                        socket.emit('message',toJSON({"contents":text, "to":partner}));
+                        socket.emit('message',toJSON({"content":text, "to":partner}));
                     }
                 });
 
