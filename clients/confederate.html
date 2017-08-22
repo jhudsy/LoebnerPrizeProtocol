@@ -58,7 +58,7 @@
                 socket.emit('control',  toJSON({"status":"register"}));
 
 //run in case of a reconnect. Note that this is actually a bit buggy as we should wait for the register to finish before running this.
-                socket.emit('control', toJSON({"status":"roundStatus"}));
+                socket.emit('control', toJSON({"status":"roundInformation"}));
 
 //handle an incoming message from a client
                 socket.on('message',function(data){
