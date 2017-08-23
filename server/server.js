@@ -44,12 +44,12 @@ config.secret["ai2"]="abc123";
 config.secret["ai3"]="abc123";
 
 //each round stores the confederate
-//number and ai number for judge 0,0,1,2 respectively
+//number and ai number for judge 0,1,2,3 respectively
 config.rounds=[]
 config.rounds[0]=[[0,1,2,3],[0,1,2,3]];
 config.rounds[1]=[[3,0,1,2],[1,2,3,0]];
-config.rounds[2]=[[2,3,0,1],[3,2,1,0]];
-config.rounds[3]=[[1,2,3,0],[2,1,0,3]];
+config.rounds[2]=[[2,3,0,1],[3,0,1,2]];
+config.rounds[3]=[[1,2,3,0],[2,3,0,1]];
 
 function getJudge(name)
 {
