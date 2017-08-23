@@ -6,7 +6,7 @@ Limitations:
 */
 var fs=require('fs');
 var path=require('path');
-var chokidar=require('chokidar');
+//var chokidar=require('chokidar');
 var io=require('socket.io-client');
 var config=require('./config.js');
 
@@ -53,17 +53,17 @@ LPPMAP['question']=       "?";
 function getLPKeyByValue(v) //This is incredibly lazy, I should just define a reverse map, but given the speed at which things should occur, this is no big deal.
 {
 	for (k in LPPMAP)
-		if LPPMAP[k]==v
-			return k
-	return v
+		if (LPPMAP[k]==v)
+			return k;
+	return v;
 }
 
 function getValueByLPKey(v)
 {
-	if LPPMAP(v)!=undefined
-		return LPPMAP(v)
+	if (LPPMAP(v)!=undefined)
+		return LPPMAP[v];
 	else
-		return v
+		return v;
 }
 
 function toJSON(map) {
@@ -100,8 +100,8 @@ socket.on('message',function(data){
     var d=(c++)+"."+getLPKeyByValue(dt[i])+".judge";
     fs.mkdir(config.OUTPUTDIR+"/"+d);
   }  
-  fs.mkdir(config.OUTPUTDIR+"/"+(c++)+".return.judge";
-}
+  fs.mkdir(config.OUTPUTDIR+"/"+(c++)+".return.judge");
+});
 
 /////////STUFF BELOW HERE WATCHES THE FILE SYSTEM TO SEND TO THE SERVER
 var buffer=""; //buffer of text to send
