@@ -90,8 +90,26 @@
                     switch(d.status) {
                         case "startRound":$('#typeArea').prop('disabled',false);
                         break;
+			case "Running":$('#typeArea').prop('disabled',false);
+				       socket.emit('control',toJSON({"status":"recap"}));
+				       break;
                     }
                 });
+
+		socket.on('recap',function(data){
+			var d=JSON.parse(data);
+			for (var t in d){
+				var m=d[t]; //message
+				if (m.id==NAME){
+					$('#messagepane').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
+					$('#messagepane').scrollTop($('#messagepane').height());
+				}
+				else{
+					$('#messagepane').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
+					$('#messagepane').scrollTop($('#messagepane').height());
+				}
+			}
+		});
 
 //handle keyboard input
                 $('#typeArea').keyup(function(e){

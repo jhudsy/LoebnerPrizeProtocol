@@ -142,7 +142,7 @@
 			var d=JSON.parse(data);
 			for (var t in d){
 				var m=d[t];
-				console.log(m);
+				//console.log(m);
                         	if (m.id==partnerR) {
                           		$('#messagepaneR').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
                           		$('#messagepaneR').scrollTop($('#messagepaneR').height());
