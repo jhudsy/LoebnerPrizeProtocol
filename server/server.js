@@ -189,7 +189,8 @@ function handleControlMessage(socket,data)
   switch(o["status"]){
     case "register": clients[o["id"]]=socket;break;
     case "roundInformation":var i=JSON.stringify(informPartners());
-                            socket.emit('roundInformation','{"roundNumber":'+currentRound+', "status":'+roundStatus+', "partners":'+i+'}');
+                            socket.emit('roundInformation','{"roundNumber":'+currentRound+', "status":"'+roundStatus+'", "partners":'+i+'}');
+			    console.log("sending round information");
                             break;
     case "recap": var c=o.id;
                   socket.emit('recap',JSON.stringify(messages[currentRound][c]));

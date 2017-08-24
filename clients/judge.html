@@ -99,8 +99,8 @@
                 partnerR=partnerArray[0];
                 if (Math.random()<0.5) partnerL=partnerArray[1];
                 else partnerR=partnerArray[1];
-                console.log(partnerL);
-                console.log(partnerR);
+                //console.log(partnerL);
+                //console.log(partnerR);
             }
 
             function handleEndRound() {
@@ -123,7 +123,7 @@
 
             $(document).ready(function() {
                 var socket=io(URL);
-                socket.emit('control',  toJSON({"status":"register"}));
+                socket.emit('control', toJSON({"status":"register"}));
                 socket.on('message',function(data){
                     var d=JSON.parse(data);
                     if (d.id==partnerR) {
@@ -135,6 +135,32 @@
                         $('#messagepaneL').scrollTop($('#messagepaneL').height());
                     }
                 });
+
+		socket.on('recap',function(data){
+                        $('#messagepaneL').empty();
+                        $('#messagepaneR').empty();
+			var d=JSON.parse(data);
+			for (var t in d){
+				var m=d[t];
+				console.log(m);
+                        	if (m.id==partnerR) {
+                          		$('#messagepaneR').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
+                          		$('#messagepaneR').scrollTop($('#messagepaneR').height());
+                        	}
+                        	else if (m.id==partnerL) {
+                          		$('#messagepaneL').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
+                          		$('#messagepaneL').scrollTop($('#messagepaneL').height());
+                        	}
+				else if (m.to==partnerR){
+                          		$('#messagepaneR').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
+                          		$('#messagepaneR').scrollTop($('#messagepaneR').height());
+				}
+				else if (m.to==partnerL){
+                          		$('#messagepaneL').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
+                          		$('#messagepaneL').scrollTop($('#messagepaneR').height());
+				}
+			}
+		});
 
                 socket.on('control',function(data){
                     var d=JSON.parse(data);
@@ -153,15 +179,20 @@
                     }
                 });
 
+
                 socket.on('roundInformation',function(data) {
                     var d=JSON.parse(data);
                     if (d.roundNumber>=0) setPartners(d.partners[NAME]);
                     switch(d.status) {
-                        case "startRound":$('#typeAreaL').prop('disabled',false);
+			    //If the case below is true, we've reconnected in the middle of a round. TODO: send recap message
+                        case "Running":$('#typeAreaL').prop('disabled',false);
                         $('#typeAreaR').prop('disabled',false);
+			socket.emit('control',toJSON({"status":"recap"}));
                         break;
                     }
                 });
+		//send a roundInformation request in case this is a reconnection
+                socket.emit('control', toJSON({"status":"roundInformation"}));
 
                 $('#typeAreaL').keyup(function(e) {
                     if (e.keyCode==13) {
