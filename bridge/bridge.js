@@ -60,7 +60,7 @@ function getLPKeyByValue(v) //This is incredibly lazy, I should just define a re
 
 function getValueByLPKey(v)
 {
-	if (LPPMAP(v)!=undefined)
+	if (LPPMAP[v]!=undefined)
 		return LPPMAP[v];
 	else
 		return v;
@@ -81,6 +81,8 @@ var c=0; //a counter which increments based on messages sent according to LPP
 /////////PRIMITIVE CONTROL MESSAGE HANDLING, IGNORES NEWROUND ETC
 socket.emit('control', toJSON({"status":"register"}));
 
+socket.emit('control', toJSON({"status":"roundInformation"}));
+
 socket.on('control',function(data){
 	var d=JSON.parse(data);
 	if (d.status=="newRound")
@@ -88,16 +90,16 @@ socket.on('control',function(data){
 });
 socket.on('roundInformation',function(data){
 	var d=JSON.parse(data);
-	if (d.roundNumber>=0) partner=d.partners[NAME][0];
+	if (d.roundNumber>=0) partner=d.partners[config.NAME][0];
 });
 
 //////////THIS WRITES SERVER MESSAGES TO THE FILE SYSTEM
 
 socket.on('message',function(data){
   dt=JSON.parse(data);
-  for (var i=0;i<dt.length;i++)
+  for (var i=0;i<dt.content.length;i++)
   {
-    var d=(c++)+"."+getLPKeyByValue(dt[i])+".judge";
+    var d=(c++)+"."+getLPKeyByValue(dt.content[i])+".judge";
     fs.mkdir(config.OUTPUTDIR+"/"+d);
   }  
   fs.mkdir(config.OUTPUTDIR+"/"+(c++)+".return.judge");
