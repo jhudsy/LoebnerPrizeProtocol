@@ -134,6 +134,16 @@ var scores=[{},{},{},{}];
 //In turn, each map is a client -> messages (array) entry storing the ordered
 //list of messages sent to/from the client.
 var messages=[{},{},{},{}];
+
+//webcast client list; stores clients by round and judge
+var webcasts=[]
+/*initialize webcast with arrays for rounds and judges*/
+for (i=0;i<4;i++)
+{
+	webcasts[i]=[];
+	for (j=0;j<4;j++)
+		webcasts[i][j]={};
+}
 //////////////////////////////////////////////////////////////////////////
 function validate(socket,data)
 {
@@ -154,7 +164,12 @@ function handleDisconnect(socket,data)
       break;
     }
   }
-  delete clients[toRemove];
+  if (toRemove!=undefined)
+    delete clients[toRemove];
+  
+  for (var i=0;i<4;i++)
+	  for (var j=0;j<4;j++)
+		  delete webcasts[i][j][socket];  
 }
 
 //messages from the controller
@@ -190,7 +205,6 @@ function handleControlMessage(socket,data)
     case "register": clients[o["id"]]=socket;break;
     case "roundInformation":var i=JSON.stringify(informPartners());
                             socket.emit('roundInformation','{"roundNumber":'+currentRound+', "status":"'+roundStatus+'", "partners":'+i+'}');
-			    console.log("sending round information");
                             break;
     case "recap": var c=o.id;
                   socket.emit('recap',JSON.stringify(messages[currentRound][c]));
@@ -225,6 +239,17 @@ function handleCommunicationMessage(socket,data)
     messages[currentRound][o.to].push(o);
     clients[o.to].emit("message",JSON.stringify(o));
     //TODO: serialise the messages to disk for future playback
+
+    //Now handle webcast by checking if getting index for judge
+    var j=config.judge.indexOf(o.to);
+    if (isJudge(o.id)){
+       j=config.judge.indexOf(o.id);
+    }
+    var keys=Object.keys(webcasts[currentRound][j]);   
+    for (w in keys)
+    {
+	    webcasts[currentRound][j][keys[w]].emit("message",JSON.stringify(o)); 
+    }
   }
   else
   {
@@ -234,7 +259,6 @@ function handleCommunicationMessage(socket,data)
 
 function handleScoreMessage(socket,data)
 {
-  console.log(data);
   if (!validate(socket,data))
     return;
   var o=JSON.parse(data);
@@ -308,14 +332,39 @@ function emitStatusUpdate(socket)
   socket.emit('statusUpdate',JSON.stringify(response));
 }
 
+////////////////////////////////////WEBCAST STUFF
+
+//on joining webcast and setting the view, the name of the judge and participants will be sent, followed by a recap of the messages so far. We will also store the socket in the webcasts map so that we can send messages as appropriate
+function handleWebcastMessage(socket,data){
+	try
+	{
+	var o=JSON.parse(data);
+	switch (o["status"]){
+		case "setView":var wround=parseInt(o["round"]);
+			       var wjudge=parseInt(o["judge"]);
+			       if (isNaN(wround) || isNaN(wjudge))
+				       break;
+		        webcasts[wround][wjudge][socket]=socket;
+		        var wRoundInfo={};
+			wRoundInfo["judge"]=config.judge[wjudge];
+			wRoundInfo["participant1"]=config.confederate[getConfederateForJudge(wjudge,wround)];
+			wRoundInfo["participant2"]=config.ai[getAIForJudge(wjudge,wround)];
+			socket.emit('participants',JSON.stringify(wRoundInfo));
+			socket.emit('recap',JSON.stringify(messages[o["round"]][config.judge[parseInt(o["judge"])]]));
+	}
+	} catch (err) {console.log(err);}
+}
+////////////////////////////////////END WEBCAST
+
 //launch the Server
 http.listen(8080,function(){console.log('listening');});
 //TODO: add serving of jquery and webcast
 io.on('connection',function(socket){
-  console.log('connection detected');
   socket.on('disconnect',function(data){handleDisconnect(socket,data);});
   socket.on('controller',function(data){handleControllerMessage(socket,data);});
   socket.on('control',function(data){handleControlMessage(socket,data);});
   socket.on('score',function(data){handleScoreMessage(socket,data);});
   socket.on('message',function(data){handleCommunicationMessage(socket,data);});
+
+  socket.on('webcast',function(data){handleWebcastMessage(socket,data);});
 });
