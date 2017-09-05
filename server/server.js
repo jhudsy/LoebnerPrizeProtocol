@@ -237,9 +237,6 @@ function handleCommunicationMessage(socket,data)
 
     messages[currentRound][o.id].push(o);
     messages[currentRound][o.to].push(o);
-    console.log(o.to);
-    console.log(clients);
-    console.log(clients[o.to]);
     clients[o.to].emit("message",JSON.stringify(o));
     //TODO: serialise the messages to disk for future playback
 
