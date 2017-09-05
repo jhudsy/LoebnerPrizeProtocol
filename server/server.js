@@ -221,10 +221,10 @@ function handleCommunicationMessage(socket,data)
   var o=JSON.parse(data);
   var c=o.id;
   if (roundStatus==RUNNING &&
-      isAI(c) && o.to==getJudgeForAIByName(getAI(c),currentRound) ||
-      isConfederate(c) && o.to==getJudgeForConfederateByName(getConfederate(c),currentRound) ||
-      isJudge(c) && (o.to==getConfederateForJudgeByName(getJudge(c),currentRound) ||
-                     o.to==getAIForJudgeByName(getJudge(c),currentRound)) &&
+      ((isAI(c) && o.to==getJudgeForAIByName(getAI(c),currentRound)) ||
+      (isConfederate(c) && o.to==getJudgeForConfederateByName(getConfederate(c),currentRound)) ||
+      (isJudge(c) && (o.to==getConfederateForJudgeByName(getJudge(c),currentRound) ||
+                     o.to==getAIForJudgeByName(getJudge(c),currentRound)))) &&
       clients[o.to]!=undefined
      )
   {
@@ -237,6 +237,9 @@ function handleCommunicationMessage(socket,data)
 
     messages[currentRound][o.id].push(o);
     messages[currentRound][o.to].push(o);
+    console.log(o.to);
+    console.log(clients);
+    console.log(clients[o.to]);
     clients[o.to].emit("message",JSON.stringify(o));
     //TODO: serialise the messages to disk for future playback
 
