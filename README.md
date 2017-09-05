@@ -90,3 +90,5 @@ Communication messages should only be sent when the round is Running, doing so a
 
 # Mapping from the old protocol
 With thanks to Robert Denis, an interface between the old and new protocol can be obtained at [http://www.vixia.fr/mylene/download/ai_old_protocol.zip]
+
+Another (node based) implementation of a bridge between the two protocols is available in the `bridge` subdirectory. To use it, edit the `config.js` file.
