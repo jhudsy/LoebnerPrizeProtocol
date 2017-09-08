@@ -128,11 +128,11 @@
                     var d=JSON.parse(data);
                     if (d.id==partnerR) {
                         $('#messagepaneR').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
-                        $('#messagepaneR').scrollTop($('#messagepaneR').height());
+                        $('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
                     }
                     else {
                         $('#messagepaneL').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
-                        $('#messagepaneL').scrollTop($('#messagepaneL').height());
+                        $('#messagepaneL').scrollTop($('#messagepaneL')[0].scrollHeight);
                     }
                 });
 
@@ -145,19 +145,19 @@
 				//console.log(m);
                         	if (m.id==partnerR) {
                           		$('#messagepaneR').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
-                          		$('#messagepaneR').scrollTop($('#messagepaneR').height());
+                          		$('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
                         	}
                         	else if (m.id==partnerL) {
                           		$('#messagepaneL').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
-                          		$('#messagepaneL').scrollTop($('#messagepaneL').height());
+                          		$('#messagepaneL').scrollTop($('#messagepaneL')[0].scrollHeight);
                         	}
 				else if (m.to==partnerR){
                           		$('#messagepaneR').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
-                          		$('#messagepaneR').scrollTop($('#messagepaneR').height());
+                          		$('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
 				}
 				else if (m.to==partnerL){
                           		$('#messagepaneL').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
-                          		$('#messagepaneL').scrollTop($('#messagepaneR').height());
+                          		$('#messagepaneL').scrollTop($('#messagepaneR')[0].scrollHeight);
 				}
 			}
 		});
@@ -199,7 +199,7 @@
                         var text=$('#typeAreaL').val();
                         $('#messagepaneL').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeAreaL').val("");
-                        $('#messagepaneL').scrollTop($('#messagepaneL').height());
+                        $('#messagepaneL').scrollTop($('#messagepaneL')[0].scrollHeight);
                         socket.emit('message',toJSON({"content":text, "to":partnerL}));
                     }
                 });
@@ -209,7 +209,7 @@
                         var text=$('#typeAreaR').val();
                         $('#messagepaneR').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeAreaR').val("");
-                        $('#messagepaneR').scrollTop($('#messagepaneR').height());
+                        $('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
                         socket.emit('message',toJSON({"content":text, "to":partnerR}));
                     }
                 });

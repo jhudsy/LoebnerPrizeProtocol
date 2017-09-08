@@ -93,19 +93,19 @@
 	    function handleMessage(m) {
                     if (m.id==partnerR) {
                       $('#messagepaneR').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
-                      $('#messagepaneR').scrollTop($('#messagepaneR').height());
+                      $('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
                     }
                     else if (m.id==partnerL) {
                       $('#messagepaneL').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
-                      $('#messagepaneL').scrollTop($('#messagepaneL').height());
+                      $('#messagepaneL').scrollTop($('#messagepaneL')[0].scrollHeight);
                     }
 		    else if (m.to==partnerR){
                       $('#messagepaneR').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
-                      $('#messagepaneR').scrollTop($('#messagepaneR').height());
+                      $('#messagepaneR').scrollTop($('#messagepaneR')[0].scrollHeight);
 	            }
 		    else if (m.to==partnerL){
                       $('#messagepaneL').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
-                      $('#messagepaneL').scrollTop($('#messagepaneR').height());
+                      $('#messagepaneL').scrollTop($('#messagepaneR')[0].scrollHeight);
 	            }
 
 	    }

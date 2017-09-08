@@ -102,11 +102,11 @@
 				var m=d[t]; //message
 				if (m.id==NAME){
 					$('#messagepane').append("<div class='left'>"+escapeHtml(m.content)+"</div>");
-					$('#messagepane').scrollTop($('#messagepane').height());
+					$('#messagepane').scrollTop($('#messagepane')[0].scrollHeight);
 				}
 				else{
 					$('#messagepane').append("<div class='right'>"+escapeHtml(m.content)+"</div>");
-					$('#messagepane').scrollTop($('#messagepane').height());
+					$('#messagepane').scrollTop($('#messagepane')[0].scrollHeight);
 				}
 			}
 		});
@@ -117,7 +117,7 @@
                         var text=$('#typeArea').val();
                         $('#messagepane').append("<div class='left'>"+escapeHtml(text)+"</div>");
                         $('#typeArea').val("");
-                        $('#messagepane').scrollTop($('#messagepane').height());
+                        $('#messagepane').scrollTop($('#messagepane')[0].scrollHeight);
                         socket.emit('message',toJSON({"content":text, "to":partner}));
                     }
                 });
