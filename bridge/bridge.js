@@ -102,7 +102,7 @@ socket.on('message',function(data){
     var d=(c++)+"."+getLPKeyByValue(dt.content[i])+".judge";
     fs.mkdir(config.OUTPUTDIR+"/"+d);
   }  
-  fs.mkdir(config.OUTPUTDIR+"/"+(c++)+".return.judge");
+  fs.mkdir(config.OUTPUTDIR+"/"+(c++)+".Return.judge");
 });
 
 /////////STUFF BELOW HERE WATCHES THE FILE SYSTEM TO SEND TO THE SERVER
@@ -113,7 +113,7 @@ fs.watch(config.INPUTDIR,function(e,f){
     return;
   var o=f.split("."); //f should be of the form NUMBER.CHARACTER.other
   if (o[2]=="other")
-	  if (o[1]!="return")
+	  if (o[1]!="Return")
 	    buffer+=getValueByLPKey(o[1])
 	  else
 	  {
