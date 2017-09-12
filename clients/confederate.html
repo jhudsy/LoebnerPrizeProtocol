@@ -64,6 +64,7 @@
                 socket.on('message',function(data){
                     var d=JSON.parse(data);
                     $('#messagepane').append("<div class='right'>"+escapeHtml(d.content)+"</div>");
+		    $('#messagepane').scrollTop($('#messagepane')[0].scrollHeight);
                 });
 
 //handle control messages
