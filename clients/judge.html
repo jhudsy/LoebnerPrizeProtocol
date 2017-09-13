@@ -115,6 +115,10 @@
             function handleStartRound() {
                 $('#typeAreaL').prop('disabled',false);
                 $('#typeAreaR').prop('disabled',false);
+                hideScoreButtons();
+            }
+
+            function hideScoreButtons(){
                 $("#robotL").hide();
                 $("#robotR").hide();
                 $("#robotL").prop('disabled',true);
@@ -169,6 +173,7 @@
                         setPartners(d.partners[NAME]);
                         $('#messagepaneL').empty();
                         $('#messagepaneR').empty();
+                        hideScoreButtons();
                         break;
                         case "startRound": handleStartRound();
                         alert("Round has started");

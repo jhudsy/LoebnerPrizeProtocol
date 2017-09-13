@@ -239,6 +239,7 @@ function handleCommunicationMessage(socket,data)
     messages[currentRound][o.to].push(o);
     clients[o.to].emit("message",JSON.stringify(o));
     //TODO: serialise the messages to disk for future playback
+    fs.appendFileSync("Round"+currentRound,JSON.stringify(o));
 
     //Now handle webcast by checking if getting index for judge
     var j=config.judge.indexOf(o.to);
