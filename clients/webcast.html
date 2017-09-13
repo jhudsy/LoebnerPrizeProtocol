@@ -143,6 +143,10 @@
         </script>
     </head>
     <body>
+    <p>Welcome to the AISB Loebner prize webcast. The contest consists of four rounds, where four AIs and four confederates chat to a single judge. The windows below show what the selected judge is seeing; if the window remains blank, then the round has not yet begun.</p>
+    <p>Please select a round and judge using the drop-downs below, and then press the "Go" button</p>
+    <br/>
+    <center>
         Round: <select id="round">
 	         <option value="0">1 </option>
 	         <option value="1">2 </option>
@@ -156,6 +160,8 @@
 	         <option value="3">4 </option>
 	       </select>
 	<button name="go" onclick="setRound()">Go</button>       
+  </center>
+  <br/>
         <div id="messagepaneL" style="overflow-y: scroll; "></div>
         <div id="messagepaneR" style="overflow-y: scroll; "></div>
     </body>
