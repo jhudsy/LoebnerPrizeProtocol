@@ -189,6 +189,7 @@
                         $('#typeAreaR').prop('disabled',false);
 			socket.emit('control',toJSON({"status":"recap"}));
                         break;
+			case "Finished": socket.emit('control',toJSON({"status":"recap"}));handleEndRound(); break; //get a recap to show windows
                     }
                 });
 		//send a roundInformation request in case this is a reconnection
