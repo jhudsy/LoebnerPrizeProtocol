@@ -253,7 +253,8 @@ function handleCommunicationMessage(socket,data)
   }
   else
   {
-    clients[c].emit("TargetError",'{"status":"Wrong Client or not connected"}');
+	  console.log(c);
+    //clients[c].emit("TargetError",'{"status":"Wrong Client or not connected"}');
   }
 }
 
