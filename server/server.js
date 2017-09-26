@@ -1,10 +1,11 @@
 var app=require('express')();
 var serveStatic = require('serve-static');
-app.use(serveStatic(__dirname));
+app.use(serveStatic(__dirname,{'index':['index.html']}));
 var http=require('http').Server(app);
 var io=require('socket.io')(http);
 var client=require('socket.io-client');
 var fs=require('fs');
+var readline=require('readline');
 io.set('origins','*:*');
 
 var config={};
@@ -138,13 +139,40 @@ var messages=[{},{},{},{}];
 //webcast client list; stores clients by round and judge
 var webcasts=[]
 /*initialize webcast with arrays for rounds and judges*/
-for (i=0;i<4;i++)
+for (var i=0;i<4;i++)
 {
 	webcasts[i]=[];
-	for (j=0;j<4;j++)
+	for (var j=0;j<4;j++)
 		webcasts[i][j]={};
 }
+
+//finally, read in messages from files if they exist
+try{
+for (var j=0;j<4;j++)
+{
+  if (fs.existsSync('Round'+j)){
+      var lines=fs.readFileSync('Round'+j,'utf-8').split('\n').filter(Boolean);
+      for (var l in lines)
+      {
+        updateMessageArray(j,JSON.parse(lines[l]));
+      }
+  }
+}
+}catch (err){console.log(err);}
+
+
 //////////////////////////////////////////////////////////////////////////
+//Write to messages, creating entry if needed
+function updateMessageArray(round,entry)
+{
+        if (messages[round][entry.id]==undefined)
+          messages[round][entry.id]=[];
+        if (messages[round][entry.to]==undefined)
+          messages[round][entry.to]=[];
+        messages[round][entry.id].push(entry);
+        messages[round][entry.to].push(entry);
+}
+
 function validate(socket,data)
 {
   var o=JSON.parse(data);
@@ -231,16 +259,11 @@ function handleCommunicationMessage(socket,data)
      )
   {
     o.secret="";
-    //initialise the message array as needed.
-    if (messages[currentRound][o.id]==undefined)
-      messages[currentRound][o.id]=[];
-    if (messages[currentRound][o.to]==undefined)
-        messages[currentRound][o.to]=[];
 
-    messages[currentRound][o.id].push(o);
-    messages[currentRound][o.to].push(o);
+    updateMessageArray(currentRound,o); //store o in messages array
     clients[o.to].emit("message",JSON.stringify(o));
-    //TODO: serialise the messages to disk for future playback
+    //Serialize the messages to disk for future playback
+    fs.appendFileSync("Round"+currentRound,JSON.stringify(o)+"\n");
 
     //Now handle webcast by checking if getting index for judge
     var j=config.judge.indexOf(o.to);
