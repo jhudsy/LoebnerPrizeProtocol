@@ -244,6 +244,7 @@ img {
             }
 
             $(document).ready(function() {
+                hideScoreButtons();
                 var socket=io(URL);
                 socket.emit('control', toJSON({"status":"register"}));
                 socket.on('message',function(data){
