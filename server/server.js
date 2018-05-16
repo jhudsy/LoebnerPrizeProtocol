@@ -235,7 +235,7 @@ function handleControlMessage(socket,data)
                             socket.emit('roundInformation','{"roundNumber":'+currentRound+', "status":"'+roundStatus+'", "partners":'+i+'}');
                             break;
     case "recap": var c=o.id;
-    		  if (messages[currentRound][c]!=undefined){ //undefined if round hasn't started, so just don't respond
+    		  if (currentRound!=-1 &&  messages[currentRound][c]!=undefined){ //undefined if round hasn't started, so just don't respond
                   socket.emit('recap',JSON.stringify(messages[currentRound][c]));
 		  }
                   break;
