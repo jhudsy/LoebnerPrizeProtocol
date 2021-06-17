@@ -1,6 +1,6 @@
 {
 	"name": "loebner-bridge",
-	"version":"1.0.0",
+	"version":"1.0.1",
 	"description": "Bridge between old and new Loebner protocols",
 	"author": "Nir Oren",
 	"dependencies":{
